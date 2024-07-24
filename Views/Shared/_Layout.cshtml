@@ -9,7 +9,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            background: url('/images/fon.png') no-repeat center center fixed;
+            background-size: cover;
             color: #343a40;
         }
 
@@ -17,7 +18,7 @@
             margin-bottom: 20px;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1, h2, h3 {
             margin-top: 20px;
             margin-bottom: 20px;
         }
@@ -30,17 +31,20 @@
 
         .song-card-container {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 10px;
         }
 
         .song-card {
-            width: 300px;
+            flex: 1;
+            min-width: 45%;
             border: 1px solid #ddd;
             border-radius: 10px;
             padding: 10px;
             background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
             .song-card img {
@@ -56,11 +60,123 @@
                 color: #6c757d;
             }
 
+            .song-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+
+        .list-unstyled li {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .list-unstyled li:hover {
+                background-color: #343a40;
+                color: #fff;
+                cursor: pointer;
+            }
+
         footer {
             text-align: center;
             padding: 20px 0;
             background-color: #343a40;
             color: #fff;
+        }
+
+        select {
+            margin-bottom: 10px;
+        }
+
+        .content-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .sidebar, .main-content {
+            flex: 1;
+            max-width: 300px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            max-width: 600px;
+        }
+
+            .sidebar h3, .main-content h3 {
+                font-size: 1.25rem;
+                margin-bottom: 10px;
+            }
+
+        .btn-primary {
+            width: 100%;
+        }
+
+        .form-control {
+            margin-bottom: 10px;
+        }
+
+        .sidepanel {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+        }
+
+            .sidepanel.right {
+                right: 0;
+                left: auto;
+            }
+
+            .sidepanel a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: white;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidepanel a:hover {
+                    color: #f1f1f1;
+                }
+
+            .sidepanel .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+
+            .sidepanel.right .closebtn {
+                left: 25px;
+                right: auto;
+            }
+
+            .sidepanel .content-center {
+                text-align: center;
+                margin-top: 50px;
+            }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
         }
     </style>
 </head>
@@ -80,7 +196,7 @@
 
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BestMusPortal</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -132,9 +248,74 @@
         </nav>
     </header>
 
+    <div id="genresPanel" class="sidepanel">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeGenresPanel()">&times;</a>
+        <div class="content-center">
+            <h3 data-lang="ru">Жанры</h3>
+            <h3 data-lang="uk" style="display: none;">Жанри</h3>
+            <h3 data-lang="en" style="display: none;">Genres</h3>
+            <ul class="list-unstyled">
+                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Рок</li>
+                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Рок</li>
+                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Rock</li>
+                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Поп</li>
+                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Поп</li>
+                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Pop</li>
+                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Джаз</li>
+                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Джаз</li>
+                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Jazz</li>
+                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Классическая музыка</li>
+                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Класична музика</li>
+                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Classical Music</li>
+                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Электронная музыка</li>
+                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Електронна музика</li>
+                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Electronic Music</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="clipsPanel" class="sidepanel right">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeClipsPanel()">&times;</a>
+        <div class="content-center">
+            <h3 data-lang="ru">Топ Клипов</h3>
+            <h3 data-lang="uk" style="display: none;">Топ Кліпів</h3>
+            <h3 data-lang="en" style="display: none;">Top Clips</h3>
+            <div class="song-card-container">
+                <div class="song-card">
+                    <img src="~/images/Sabrina.jpg" alt="Thumbnail">
+                    <h5>Espresso</h5>
+                    <p>Sabrina Carpenter</p>
+                    <video controls>
+                        <source src="~/video/y2mate.com - Sabrina Carpenter  Espresso Official Video_360P.mp4" type="video/mp4">
+                        Ваш браузер не поддерживает элемент
+                        <code>video</code>.
+                    </video>
+                </div>
+                <div class="song-card">
+                    <img src="~/images/Sting.jpg" alt="Thumbnail">
+                    <h5>Englishman in New York</h5>
+                    <p>Sting</p>
+                    <video controls>
+                        <source src="~/video/utomp3.com - Sting  Englishman In New York.mp4" type="video/mp4">
+                        Ваш браузер не поддерживает элемент
+                        <code>video</code>.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
-        <div class="row">
-            <div class="col-md-3 sidebar-left">
+        <div class="d-flex justify-content-center mb-3">
+            <button class="openbtn btn btn-secondary mr-2" onclick="openGenresPanel()" data-lang="ru">Жанры</button>
+            <button class="openbtn btn btn-secondary mr-2" onclick="openGenresPanel()" data-lang="uk" style="display: none;">Жанри</button>
+            <button class="openbtn btn btn-secondary mr-2" onclick="openGenresPanel()" data-lang="en" style="display: none;">Genres</button>
+            <button class="openbtn btn btn-secondary" onclick="openClipsPanel()" data-lang="ru">Клипы</button>
+            <button class="openbtn btn btn-secondary" onclick="openClipsPanel()" data-lang="uk" style="display: none;">Кліпи</button>
+            <button class="openbtn btn btn-secondary" onclick="openClipsPanel()" data-lang="en" style="display: none;">Clips</button>
+        </div>
+        <div class="content-wrapper">
+            <div class="sidebar sidebar-filter">
                 <h3 data-lang="ru">Фильтр песен</h3>
                 <h3 data-lang="uk" style="display: none;">Фільтр пісень</h3>
                 <h3 data-lang="en" style="display: none;">Song Filter</h3>
@@ -199,14 +380,11 @@
                 </form>
             </div>
 
-            <div class="col-md-6">
+            <div class="main-content">
                 @RenderBody()
-            </div>
-
-            <div class="col-md-3 sidebar-right">
-                <h3 data-lang="ru">Добро пожаловать на Музыкальный портал</h3>
-                <h3 data-lang="uk" style="display: none;">Ласкаво просимо на Музичний портал</h3>
-                <h3 data-lang="en" style="display: none;">Welcome to the Music Portal</h3>
+                <h3 data-lang="ru">Фильтр пользователей</h3>
+                <h3 data-lang="uk" style="display: none;">Фільтр користувачів</h3>
+                <h3 data-lang="en" style="display: none;">User Filter</h3>
                 <form id="filterForm">
                     <label for="userFilter" data-lang="ru">Имя</label>
                     <label for="userFilter" data-lang="uk" style="display: none;">Ім'я</label>
@@ -249,65 +427,6 @@
         </div>
     </div>
 
-    <main class="container my-4">
-        <section id="genres" class="text-center">
-            <h2 data-lang="ru">Жанры</h2>
-            <h2 data-lang="uk" style="display: none;">Жанри</h2>
-            <h2 data-lang="en" style="display: none;">Genres</h2>
-            <p class="text-center" data-lang="ru">Скачивайте и загружайте любимые песни в различных жанрах!</p>
-            <p class="text-center" data-lang="uk" style="display: none;">Завантажуйте та завантажуйте улюблені пісні в різних жанрах!</p>
-            <p class="text-center" data-lang="en" style="display: none;">Download and upload your favorite songs in various genres!</p>
-            <ul class="list-unstyled">
-                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Рок</li>
-                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Рок</li>
-                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Rock</li>
-
-                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Поп</li>
-                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Поп</li>
-                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Pop</li>
-
-                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Джаз</li>
-                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Джаз</li>
-                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Jazz</li>
-
-                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Классическая музыка</li>
-                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Класична музика</li>
-                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Classical Music</li>
-
-                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Электронная музыка</li>
-                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Електронна музика</li>
-                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Electronic Music</li>
-            </ul>
-        </section>
-        <section id="song-clips" class="text-center my-4">
-            <h2 data-lang="ru">Топ Клипов</h2>
-            <h2 data-lang="uk" style="display: none;">Топ Кліпів</h2>
-            <h2 data-lang="en" style="display: none;">Top Clips</h2>
-            <div class="song-card-container">
-                <div class="song-card">
-                    <img src="~/images/Sabrina.jpg" alt="Thumbnail">
-                    <h5>Espresso</h5>
-                    <p>Sabrina Carpenter</p>
-                    <video controls>
-                        <source src="~/video/y2mate.com - Sabrina Carpenter  Espresso Official Video_360P.mp4" type="video/mp4">
-                        Ваш браузер не поддерживает элемент
-                        <code>video</code>.
-                    </video>
-                </div>
-                <div class="song-card">
-                    <img src="~/images/Sting.jpg" alt="Thumbnail">
-                    <h5>Englishman in New York</h5>
-                    <p>Sting</p>
-                    <video controls>
-                        <source src="~/video/utomp3.com - Sting  Englishman In New York.mp4" type="video/mp4">
-                        Ваш браузер не поддерживает элемент
-                        <code>video</code>.
-                    </video>
-                </div>
-            </div>
-        </section>
-    </main>
-
     <footer>
         <p>&copy; 2024 Музыкальный портал. Все права защищены.</p>
     </footer>
@@ -335,6 +454,22 @@
                 });
             });
         });
+
+        function openGenresPanel() {
+            document.getElementById("genresPanel").style.width = "250px";
+        }
+
+        function closeGenresPanel() {
+            document.getElementById("genresPanel").style.width = "0";
+        }
+
+        function openClipsPanel() {
+            document.getElementById("clipsPanel").style.width = "250px";
+        }
+
+        function closeClipsPanel() {
+            document.getElementById("clipsPanel").style.width = "0";
+        }
 
         function filterUsers() {
             var form = $('#filterForm');

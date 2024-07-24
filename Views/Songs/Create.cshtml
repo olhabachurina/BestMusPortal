@@ -1,4 +1,5 @@
-﻿@model BestMusPortal.Models.Song
+﻿@model BestMusPortal.ViewModels.SongViewModel
+
 
 @{
     ViewData["Title"] = "Create Song";
@@ -11,6 +12,7 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -28,12 +30,19 @@
                 <span asp-validation-for="GenreId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label>Музыкальный файл</label>
-                <input type="file" name="musicFile" class="form-control" />
+                <label asp-for="Mood" class="control-label"></label>
+                <input asp-for="Mood" class="form-control" />
+                <span asp-validation-for="Mood" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label>Видео файл</label>
-                <input type="file" name="videoFile" class="form-control" />
+                <label asp-for="MusicFile" class="control-label"></label>
+                <input asp-for="MusicFile" type="file" class="form-control" />
+                <span asp-validation-for="MusicFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VideoFile" class="control-label"></label>
+                <input asp-for="VideoFile" type="file" class="form-control" />
+                <span asp-validation-for="VideoFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -45,9 +54,9 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
