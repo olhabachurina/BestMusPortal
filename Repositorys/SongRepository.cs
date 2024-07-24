@@ -15,23 +15,17 @@ namespace BestMusPortal.Repositorys
 
         public async Task<IEnumerable<Song>> GetAllSongsAsync()
         {
-            return await _context.Songs
-                                 .Include(s => s.Genre)
-                                 .Include(s => s.User)
-                                 .ToListAsync();
+            return await _context.Songs.Include(s => s.Genre).Include(s => s.User).ToListAsync();
         }
 
         public async Task<Song> GetSongByIdAsync(int songId)
         {
-            return await _context.Songs
-                                 .Include(s => s.Genre)
-                                 .Include(s => s.User)
-                                 .FirstOrDefaultAsync(s => s.SongId == songId);
+            return await _context.Songs.Include(s => s.Genre).Include(s => s.User).FirstOrDefaultAsync(s => s.SongId == songId);
         }
 
         public async Task AddSongAsync(Song song)
         {
-            await _context.Songs.AddAsync(song);
+            _context.Songs.Add(song);
             await _context.SaveChangesAsync();
         }
 

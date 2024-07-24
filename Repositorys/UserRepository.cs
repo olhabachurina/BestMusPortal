@@ -23,6 +23,11 @@ namespace BestMusPortal.Repositorys
             return await _context.Users.FindAsync(userId);
         }
 
+        public async Task<User> GetUserByNameAsync(string userName)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+        }
+
         public async Task AddUserAsync(User user)
         {
             await _context.Users.AddAsync(user);

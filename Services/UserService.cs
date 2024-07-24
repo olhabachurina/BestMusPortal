@@ -31,7 +31,7 @@ namespace BestMusPortal.Services
         {
             return await _userRepository.GetUserByIdAsync(userId);
         }
-
+        
         // Добавляет нового пользователя
         public async Task AddUserAsync(User user)
         {
@@ -43,7 +43,10 @@ namespace BestMusPortal.Services
         {
             await _userRepository.UpdateUserAsync(user);
         }
-
+        public async Task<User> GetUserByNameAsync(string userName)
+        {
+            return await _userRepository.GetUserByNameAsync(userName);
+        }
         // Удаляет пользователя по ID
         public async Task DeleteUserAsync(int userId)
         {

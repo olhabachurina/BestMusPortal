@@ -31,14 +31,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
-// Configure cookie policy
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.SameSite = SameSiteMode.None;
-});
-
 var app = builder.Build();
+
+// Ensure uploads folder exists
+var uploadsPath = Path.Combine(app.Environment.WebRootPath, "uploads");
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

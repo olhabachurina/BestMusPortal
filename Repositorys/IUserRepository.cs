@@ -9,5 +9,6 @@ namespace BestMusPortal.Repositorys
         Task AddUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(int userId);
+        Task<User> GetUserByNameAsync(string userName);
     }
 }

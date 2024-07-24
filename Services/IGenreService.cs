@@ -9,5 +9,6 @@ namespace BestMusPortal.Services
         Task AddGenreAsync(Genre genre);
         Task UpdateGenreAsync(Genre genre);
         Task DeleteGenreAsync(int genreId);
+
     }
 }
