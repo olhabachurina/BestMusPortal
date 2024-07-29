@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - Музыкальный портал</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>
+        @{
+            var title = $"{ViewData["Title"]} - Музыкальный портал";
+            for (var i = 0; i < title.Length; i++)
+            {
+                <span class="title-letter" style="animation-delay: @(i * 0.1)s;">@title[i]</span>
+            }
+        }
+    </title>
     <link rel="stylesheet" href="~/css/styles.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -178,6 +188,35 @@
             padding: 10px 15px;
             border: none;
         }
+
+        h5[data-lang="ru"], h5[data-lang="uk"], h5[data-lang="en"],h5 {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #2c3e50;
+            text-align: center;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .login-background {
+            background-color: #e0f7fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group, tr, th {
+            background-color: #e0f7fa;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
 </head>
 <body>
@@ -237,11 +276,11 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index" data-lang="uk" style="display: none;">Адмін</a>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index" data-lang="en" style="display: none;">Admin</a>
                         </li>
-                        <li class="nav-item">
+                       @*  <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AllUsers" data-lang="ru">Все пользователи</a>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AllUsers" data-lang="uk" style="display: none;">Всі користувачі</a>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AllUsers" data-lang="en" style="display: none;">All Users</a>
-                        </li>
+                        </li> *@
                     </ul>
                 </div>
             </div>
@@ -261,15 +300,39 @@
                 <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Поп</li>
                 <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Поп</li>
                 <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Pop</li>
-                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Джаз</li>
-                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Джаз</li>
-                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Jazz</li>
+                <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon">Романтика</li>
+                <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon">Романтика</li>
+                <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Romance</li>
                 <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Классическая музыка</li>
                 <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Класична музика</li>
                 <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Classical Music</li>
                 <li data-lang="ru"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Электронная музыка</li>
                 <li data-lang="uk" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Електронна музика</li>
                 <li data-lang="en" style="display: none;"><img src="~/images/icon-music.png" alt="Note Icon" class="note-icon"> Electronic Music</li>
+            </ul>
+            <h3 data-lang="ru">Настроение</h3>
+            <h3 data-lang="uk" style="display: none;">Настрій</h3>
+            <h3 data-lang="en" style="display: none;">Mood</h3>
+            <ul class="list-unstyled">
+                <li data-lang="ru"><img src="~/images/happiness.png" alt="Note Icon" class="note-icon"> Счастье</li>
+                <li data-lang="uk" style="display: none;"><img src="~/images/happiness.png" alt="Note Icon" class="note-icon">Щастя</li>
+                <li data-lang="en" style="display: none;"><img src="~/images/happiness.png" alt="Note Icon" class="note-icon">Happy</li>
+                <li data-lang="ru"><img src="~/images/sadness.png" alt="Note Icon" class="note-icon">   Грусть</li>
+                <li data-lang="uk" style="display: none;"><img src="~/images/sadness.png" alt="Note Icon" class="note-icon">Смуток</li>
+                <li data-lang="en" style="display: none;"><img src="~/images/sadness.png" alt="Note Icon" class="note-icon">Sad</li>
+                <li data-lang="ru"><img src="~/images/relaxed.png" alt="Note Icon" class="note-icon">   Релакс</li>
+                <li data-lang="uk" style="display: none;"><img src="~/images/relaxed.png" alt="Note Icon" class="note-icon">Релакс</li>
+                <li data-lang="en" style="display: none;"><img src="~/images/relaxed.png" alt="Note Icon" class="note-icon">Relax</li>
+                <li data-lang="ru"><img src="~/images/energy.png" alt="Note Icon" class="note-icon">    Энерджи</li>
+                <li data-lang="uk" style="display: none;"><img src="~/images/energy.png" alt="Note Icon" class="note-icon">Енерджі</li>
+                <li data-lang="en" style="display: none;"><img src="~/images/energy.png" alt="Note Icon" class="note-icon">Energeti</li>
+            </ul>
+
+            <h5 data-lang="ru">Выбирай музыку! Слушай! Скачивай! Наслаждайся! И помни: если твой сосед стучит в стену, это знак, что он тоже хочет поучаствовать в твоем сольном концерте!</h5>
+            <h5 data-lang="uk" style="display: none;">Обирай музику! Слухай!Завантажуй! Насолоджуйся! І пам'ятай: якщо твій сусід стукає у стіну, це знак, що він теж хоче взяти участь у твоєму сольному концерті!</h5>
+            <h5 data-lang="en" style="display: none;">Choose your music! Listen! Download! Enjoy! And remember: if your neighbor knocks on the wall, it’s a sign that he also wants to take part in your recital!</h5>
+            <ul class="list-unstyled">
+                <li data-lang="ru"><img src="~/images/guitar.png" alt="Note Icon" class="note-icon"> </li>
             </ul>
         </div>
     </div>
@@ -314,119 +377,13 @@
             <button class="openbtn btn btn-secondary" onclick="openClipsPanel()" data-lang="uk" style="display: none;">Кліпи</button>
             <button class="openbtn btn btn-secondary" onclick="openClipsPanel()" data-lang="en" style="display: none;">Clips</button>
         </div>
-        <div class="content-wrapper">
-            <div class="sidebar sidebar-filter">
-                <h3 data-lang="ru">Фильтр песен</h3>
-                <h3 data-lang="uk" style="display: none;">Фільтр пісень</h3>
-                <h3 data-lang="en" style="display: none;">Song Filter</h3>
-                <form>
-                    <label for="genreFilter" data-lang="ru">Жанр</label>
-                    <label for="genreFilter" data-lang="uk" style="display: none;">Жанр</label>
-                    <label for="genreFilter" data-lang="en" style="display: none;">Genre</label>
-                    <select id="genreFilter" class="form-control mb-2">
-                        <option value="all" data-lang="ru">Все</option>
-                        <option value="rock" data-lang="ru">Рок</option>
-                        <option value="pop" data-lang="ru">Поп</option>
-                        <option value="jazz" data-lang="ru">Джаз</option>
-                        <option value="classical" data-lang="ru">Классическая музыка</option>
-                        <option value="electronic" data-lang="ru">Электронная музыка</option>
-                        <option value="all" data-lang="uk" style="display: none;">Всі</option>
-                        <option value="rock" data-lang="uk" style="display: none;">Рок</option>
-                        <option value="pop" data-lang="uk" style="display: none;">Поп</option>
-                        <option value="jazz" data-lang="uk" style="display: none;">Джаз</option>
-                        <option value="classical" data-lang="uk" style="display: none;">Класична музика</option>
-                        <option value="electronic" data-lang="uk" style="display: none;">Електронна музика</option>
-                        <option value="all" data-lang="en" style="display: none;">All</option>
-                        <option value="rock" data-lang="en" style="display: none;">Rock</option>
-                        <option value="pop" data-lang="en" style="display: none;">Pop</option>
-                        <option value="jazz" data-lang="en" style="display: none;">Jazz</option>
-                        <option value="classical" data-lang="en" style="display: none;">Classical Music</option>
-                        <option value="electronic" data-lang="en" style="display: none;">Electronic Music</option>
-                    </select>
-
-                    <label for="artistFilter" data-lang="ru">Исполнитель</label>
-                    <label for="artistFilter" data-lang="uk" style="display: none;">Виконавець</label>
-                    <label for="artistFilter" data-lang="en" style="display: none;">Artist</label>
-                    <select id="artistFilter" class="form-control mb-2">
-                        <option value="all" data-lang="ru">Все</option>
-                        <option value="artist1" data-lang="ru">Исполнитель 1</option>
-                        <option value="artist2" data-lang="ru">Исполнитель 2</option>
-                        <option value="all" data-lang="uk" style="display: none;">Всі</option>
-                        <option value="artist1" data-lang="uk" style="display: none;">Виконавець 1</option>
-                        <option value="artist2" data-lang="uk" style="display: none;">Виконавець 2</option>
-                        <option value="all" data-lang="en" style="display: none;">All</option>
-                        <option value="artist1" data-lang="en" style="display: none;">Artist 1</option>
-                        <option value="artist2" data-lang="en" style="display: none;">Artist 2</option>
-                    </select>
-
-                    <label for="moodFilter" data-lang="ru">Настроение</label>
-                    <label for="moodFilter" data-lang="uk" style="display: none;">Настрій</label>
-                    <label for="moodFilter" data-lang="en" style="display: none;">Mood</label>
-                    <select id="moodFilter" class="form-control mb-2">
-                        <option value="all" data-lang="ru">Все</option>
-                        <option value="happy" data-lang="ru">Счастливый</option>
-                        <option value="sad" data-lang="ru">Грустный</option>
-                        <option value="all" data-lang="uk" style="display: none;">Всі</option>
-                        <option value="happy" data-lang="uk" style="display: none;">Щасливий</option>
-                        <option value="sad" data-lang="uk" style="display: none;">Сумний</option>
-                        <option value="all" data-lang="en" style="display: none;">All</option>
-                        <option value="happy" data-lang="en" style="display: none;">Happy</option>
-                        <option value="sad" data-lang="en" style="display: none;">Sad</option>
-                    </select>
-
-                    <button type="button" class="btn btn-primary" data-lang="ru">Поиск</button>
-                    <button type="button" class="btn btn-primary" data-lang="uk" style="display: none;">Пошук</button>
-                    <button type="button" class="btn btn-primary" data-lang="en" style="display: none;">Search</button>
-                </form>
-            </div>
-
-            <div class="main-content">
+       
+        <div class="container">
+            <main role="main" class="pb-3">
                 @RenderBody()
-                <h3 data-lang="ru">Фильтр пользователей</h3>
-                <h3 data-lang="uk" style="display: none;">Фільтр користувачів</h3>
-                <h3 data-lang="en" style="display: none;">User Filter</h3>
-                <form id="filterForm">
-                    <label for="userFilter" data-lang="ru">Имя</label>
-                    <label for="userFilter" data-lang="uk" style="display: none;">Ім'я</label>
-                    <label for="userFilter" data-lang="en" style="display: none;">Name</label>
-                    <input type="text" id="userFilter" name="nameFilter" placeholder="Введите имя" class="form-control mb-2">
-
-                    <label for="emailFilter" data-lang="ru">Email</label>
-                    <label for="emailFilter" data-lang="uk" style="display: none;">Електронна пошта</label>
-                    <label for="emailFilter" data-lang="en" style="display: none;">Email</label>
-                    <input type="email" id="emailFilter" name="emailFilter" placeholder="Введите email" class="form-control mb-2">
-
-                    <label for="statusFilter" data-lang="ru">Активность</label>
-                    <label for="statusFilter" data-lang="uk" style="display: none;">Активність</label>
-                    <label for="statusFilter" data-lang="en" style="display: none;">Activity</label>
-                    <select id="statusFilter" name="statusFilter" class="form-control mb-2">
-                        <option value="all" data-lang="ru">Все</option>
-                        <option value="active" data-lang="ru">Активные</option>
-                        <option value="inactive" data-lang="ru">Неактивные</option>
-                        <option value="all" data-lang="uk" style="display: none;">Всі</option>
-                        <option value="active" data-lang="uk" style="display: none;">Активні</option>
-                        <option value="inactive" data-lang="uk" style="display: none;">Неактивні</option>
-                        <option value="all" data-lang="en" style="display: none;">All</option>
-                        <option value="active" data-lang="en" style="display: none;">Active</option>
-                        <option value="inactive" data-lang="en" style="display: none;">Inactive</option>
-                    </select>
-
-                    <button type="button" onclick="filterUsers()" class="btn btn-primary" data-lang="ru">Поиск</button>
-                    <button type="button" onclick="filterUsers()" class="btn btn-primary" data-lang="uk" style="display: none;">Пошук</button>
-                    <button type="button" onclick="filterUsers()" class="btn btn-primary" data-lang="en" style="display: none;">Search</button>
-                </form>
-                <div class="user-list mt-4">
-                    <h4 data-lang="ru">Список пользователей</h4>
-                    <h4 data-lang="uk" style="display: none;">Список користувачів</h4>
-                    <h4 data-lang="en" style="display: none;">User List</h4>
-                    <div id="userList">
-                        @await Html.PartialAsync("~/Views/Admin/_UserListPartial.cshtml", Model as IEnumerable<BestMusPortal.Models.User>)
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+            </main>
+        
+        
     <footer>
         <p>&copy; 2024 Музыкальный портал. Все права защищены.</p>
     </footer>
