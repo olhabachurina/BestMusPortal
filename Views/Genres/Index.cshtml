@@ -4,16 +4,26 @@
     ViewData["Title"] = "Genres";
 }
 
-<h1>Genres</h1>
+<h5 data-lang="ru">Жанры</h5>
+<h5 data-lang="uk" style="display: none;">Жанри</h5>
+<h5 data-lang="en" style="display: none;">Genres</h5>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create" class="btn btn-primary" data-lang="ru">Создать</a>
+    <a asp-action="Create" class="btn btn-primary" data-lang="uk" style="display: none;">Створити</a>
+    <a asp-action="Create" class="btn btn-primary" data-lang="en" style="display: none;">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
+            <th data-lang="ru">
+                @Html.DisplayNameFor(model => model.Name) (Название)
+            </th>
+            <th data-lang="uk" style="display: none;">
+                @Html.DisplayNameFor(model => model.Name) (Назва)
+            </th>
+            <th data-lang="en" style="display: none;">
+                @Html.DisplayNameFor(model => model.Name) (Name)
             </th>
             <th></th>
         </tr>
@@ -26,11 +36,39 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.GenreId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.GenreId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.GenreId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.GenreId" data-lang="ru">Редактировать</a>
+                    <a asp-action="Edit" asp-route-id="@item.GenreId" data-lang="uk" style="display: none;">Редагувати</a>
+                    <a asp-action="Edit" asp-route-id="@item.GenreId" data-lang="en" style="display: none;">Edit</a>
+                    |
+                    <a asp-action="Details" asp-route-id="@item.GenreId" data-lang="ru">Детали</a>
+                    <a asp-action="Details" asp-route-id="@item.GenreId" data-lang="uk" style="display: none;">Деталі</a>
+                    <a asp-action="Details" asp-route-id="@item.GenreId" data-lang="en" style="display: none;">Details</a>
+                    |
+                    <a asp-action="Delete" asp-route-id="@item.GenreId" data-lang="ru">Удалить</a>
+                    <a asp-action="Delete" asp-route-id="@item.GenreId" data-lang="uk" style="display: none;">Видалити</a>
+                    <a asp-action="Delete" asp-route-id="@item.GenreId" data-lang="en" style="display: none;">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+
+@section Scripts {
+    <script>
+        function changeLanguage(lang) {
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                element.style.display = element.getAttribute('data-lang') === lang ? 'block' : 'none';
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("languageSelect").addEventListener("change", function () {
+                changeLanguage(this.value);
+            });
+
+            /
+            changeLanguage(document.getElementById("languageSelect").value);
+        });
+    </script>
+}

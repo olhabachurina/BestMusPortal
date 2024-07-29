@@ -4,39 +4,63 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace BestMusPortal.Data
 {
-    
-        public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
         {
-            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-                : base(options)
+        }
+
+        public DbSet<Song> Songs { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Song>(entity =>
             {
-            }
+                entity.HasKey(e => e.SongId);
 
-            public DbSet<User> Users { get; set; }
-            public DbSet<Song> Songs { get; set; }
-            public DbSet<Genre> Genres { get; set; }
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(255);
 
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
+                entity.Property(e => e.Artist)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.MusicFilePath)
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.VideoFilePath)
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.Mood)
+                    .HasMaxLength(255);
+
+                entity.HasOne<Genre>()
+                    .WithMany(g => g.Songs)
+                    .HasForeignKey(e => e.GenreId);
+
+
+            });
+
+            modelBuilder.Entity<Genre>(entity =>
             {
-                base.OnModelCreating(modelBuilder);
+                entity.HasKey(e => e.GenreId);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
+            });
 
-                modelBuilder.Entity<User>()
-                    .HasMany(u => u.Songs)
-                    .WithOne(s => s.User)
-                    .HasForeignKey(s => s.UserId);
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(e => e.UserId);
+                entity.Property(e => e.UserName).IsRequired().HasMaxLength(255);
 
-                modelBuilder.Entity<Genre>()
-                    .HasMany(g => g.Songs)
-                    .WithOne(s => s.Genre)
-                    .HasForeignKey(s => s.GenreId);
-
-                modelBuilder.Entity<User>()
-                    .Property(u => u.IsApproved)
-                    .HasDefaultValue(false);
-
-                modelBuilder.Entity<User>()
-                    .Property(u => u.Role)
-                    .HasDefaultValue("User");
-            }
+            });
+            modelBuilder.Entity<Song>().Property(s => s.VideoUrl).HasMaxLength(500);
         }
     }
+}

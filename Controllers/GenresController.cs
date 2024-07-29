@@ -33,7 +33,7 @@ namespace BestMusPortal.Controllers
             });
             return View(genreViewModels);
         }
-
+       
         public IActionResult Create()
         {
             return View();

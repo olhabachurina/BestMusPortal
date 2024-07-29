@@ -13,6 +13,12 @@ namespace BestMusPortal.Services
             _songRepository = songRepository;
         }
 
+        public async Task AddSongAsync(Song song)
+        {
+            if (song == null) throw new ArgumentNullException(nameof(song));
+            await _songRepository.AddSongAsync(song);
+        }
+
         public async Task<IEnumerable<Song>> GetAllSongsAsync()
         {
             return await _songRepository.GetAllSongsAsync();
@@ -23,13 +29,9 @@ namespace BestMusPortal.Services
             return await _songRepository.GetSongByIdAsync(songId);
         }
 
-        public async Task AddSongAsync(Song song)
-        {
-            await _songRepository.AddSongAsync(song);
-        }
-
         public async Task UpdateSongAsync(Song song)
         {
+            if (song == null) throw new ArgumentNullException(nameof(song));
             await _songRepository.UpdateSongAsync(song);
         }
 

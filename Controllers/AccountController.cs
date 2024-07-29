@@ -16,60 +16,25 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Policy;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Text.Encodings.Web;
 
 namespace BestMusPortal.Controllers
 {
-
     public class AccountController : Controller
     {
-        //        [HttpGet]
-        //        public IActionResult Login()
-        //        {
-        //            return View();
-        //        }
-
-        //        [HttpPost]
-        //        public async Task<IActionResult> Login(string username, string password)
-        //        {
-        //            if (username == "Admin" && password == "password")
-        //            {
-        //                var claims = new List<Claim>
-        //                {
-        //                    new Claim(ClaimTypes.Name, username)
-        //                };
-
-        //                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-        //                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
-        //                return RedirectToAction("Index", "Home");
-        //            }
-
-        //            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        //            return View();
-        //        }
-
-        //        [HttpPost]
-        //        public async Task<IActionResult> Logout()
-        //        {
-        //            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        //            return RedirectToAction("Login", "Account");
-        //        }
-        //    }
-        //}
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
 
-        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, ILogger<AccountController> logger)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<AccountController> logger)
         {
-            _signInManager = signInManager;
             _userManager = userManager;
+            _signInManager = signInManager;
             _logger = logger;
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -77,14 +42,13 @@ namespace BestMusPortal.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -93,7 +57,7 @@ namespace BestMusPortal.Controllers
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
+                    return View("Lockout");
                 }
                 else
                 {
@@ -101,16 +65,9 @@ namespace BestMusPortal.Controllers
                     return View(model);
                 }
             }
-            return View(model);
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            // Если модель недействительна, вернуть её для повторного ввода данных
+            return View(model);
         }
 
         private IActionResult RedirectToLocal(string returnUrl)
@@ -123,6 +80,35 @@ namespace BestMusPortal.Controllers
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
+        }
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("User created a new account with password.");
+                    return RedirectToAction("Index", "Home");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            // Если модель недействительна, вернуть её для повторного ввода данных
+            return View(model);
         }
     }
 }
